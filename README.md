@@ -132,7 +132,7 @@ Welcome to the **30 Days - 30 Projects** challenge! This repository contains 30 
 ## How to Use
 
 1. **Clone the repository**:
-   ```bash
+   ```
    git clone https://github.com/YOUR-USERNAME/30Days-30Projects.git
    ```
 
@@ -145,7 +145,7 @@ Welcome to the **30 Days - 30 Projects** challenge! This repository contains 30 
 
 4. **Run React projects**:
    - Navigate to the project directory and install dependencies:
-     ```bash
+     ```
      cd react/day-x
      npm install
      npm start
