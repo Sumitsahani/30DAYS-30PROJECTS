@@ -133,7 +133,7 @@ Welcome to the **30 Days - 30 Projects** challenge! This repository contains 30 
 
 1. **Clone the repository**:
    ```
-   git clone https://github.com/YOUR-USERNAME/30Days-30Projects.git
+   git clone https://github.com/Sumitsahani/30DAYS-30PROJECTS.git
    ```
 
 2. **Navigate to each project folder**:
