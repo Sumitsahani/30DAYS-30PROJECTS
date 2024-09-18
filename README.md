@@ -158,5 +158,3 @@ Created by **Sumit Kumar Sahani**.
 ---
 
 Let’s learn by building!
-
-```
