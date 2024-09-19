@@ -1,0 +1,188 @@
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* App Container */
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Theme Info */
+.theme-toggle {
+  background: #6200ea;
+  color: #fff;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-bottom: 20px;
+}
+
+.theme-toggle:hover {
+  background: #8e24aa;
+}
+
+/* Calculator */
+.calculator {
+  background: #fff;
+  border-radius: 30px;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.4);
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Display */
+.display {
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: right;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.1);
+  font-size: 1.8rem;
+}
+
+/* Buttons */
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+button {
+  font-size: 1.5rem;
+  padding: 15px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+  color: #fff;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  box-shadow: 0 5px 0 #000;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+button:active {
+  transform: scale(0.9);
+  box-shadow: 0 3px 0 #000;
+}
+
+/* Light Theme (Angel) */
+.app.light {
+  background: url('https://via.placeholder.com/1920x1080/fffae6/000000?text=Heavenly+Clouds') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.calculator {
+  background: #fff;
+  border: 5px solid #f0f8ff;
+}
+
+.display {
+  background: #f0f8ff;
+  color: #333;
+}
+
+.number-btn {
+  background: #b3e5fc;
+}
+
+.number-btn:hover {
+  background: #81d4fa;
+}
+
+.operator-btn {
+  background: #80deea;
+}
+
+.operator-btn:hover {
+  background: #4dd0e1;
+}
+
+.equal-btn {
+  background: #4caf50;
+  grid-column: span 2;
+}
+
+.equal-btn:hover {
+  background: #43a047;
+}
+
+.clear-btn {
+  background: #e57373;
+}
+
+.clear-btn:hover {
+  background: #ef5350;
+}
+
+/* Dark Theme (Demon) */
+.app.dark {
+  background: url('https://via.placeholder.com/1920x1080/111/fff?text=Dark+Night') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.calculator {
+  background: #222;
+  border: 5px solid #333;
+}
+
+.display {
+  background: #333;
+  color: #f5f5f5;
+}
+
+.number-btn {
+  background: #e57373;
+}
+
+.number-btn:hover {
+  background: #ef5350;
+}
+
+.operator-btn {
+  background: #f06292;
+}
+
+.operator-btn:hover {
+  background: #ec407a;
+}
+
+.equal-btn {
+  background: #ff5722;
+  grid-column: span 2;
+}
+
+.equal-btn:hover {
+  background: #e64a19;
+}
+
+.clear-btn {
+  background: #d32f2f;
+}
+
+.clear-btn:hover {
+  background: #c62828;
+}
