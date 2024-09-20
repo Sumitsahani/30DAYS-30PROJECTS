@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo-list</title>
+    <style>
+        /* Basic styling for navigation bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            padding: 1rem;
+            color: white;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        #auth-section, #todo-section, #book-section, #genre-section {
+            margin: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div>
+            <a href="#" id="home-link">Home</a>
+            <a href="#" id="book-link">Book Detail</a>
+            <a href="#" id="genre-link">Genre</a>
+        </div>
+        <div id="nav-links">
+            <a href="#" id="register-link" style="display:none;">Register</a>
+            <a href="#" id="login-link" style="display:none;">Login</a>
+            <a href="#" id="logout-link" style="display:none;">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Authentication UI -->
+    <div id="auth-section">
+        <input id="email" type="email" placeholder="Email"/>
+        <input id="password" type="password" placeholder="Password"/>
+        <button id="registerBtn">Register</button>
+        <button id="loginBtn">Login</button>
+    </div>
+
+    <!-- Todo List UI -->
+    <div id="todo-section" style="display:none;">
+        <input id="namebox" type="text" placeholder="Enter Todo"/>
+        <button id="addbtn">Add</button>
+        <ul id="todo-list"></ul>
+    </div>
+
+    <!-- Book Detail UI -->
+    <div id="book-section" style="display:none;">
+        <input id="book-title" type="text" placeholder="Enter Book Title"/>
+        <input id="book-author" type="text" placeholder="Enter Author"/>
+        <input id="book-genre" type="text" placeholder="Enter Genre"/>
+        <button id="addBookBtn">Add Book</button>
+        <ul id="book-list"></ul>
+    </div>
+
+    <!-- Genre UI -->
+    <div id="genre-section" style="display:none;">
+        <input id="genre-name" type="text" placeholder="Enter Genre Name"/>
+        <button id="addGenreBtn">Add Genre</button>
+        <ul id="genre-list"></ul>
+    </div>
+
+    <script type="module">
+        // Import Firebase dependencies
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics.js";
+        import { getDatabase, ref, set, update, remove, onValue } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQxTfHxK9zx8q0g7xr06YWPeIjaJScYqU",
+            authDomain: "personal-projects-c782a.firebaseapp.com",
+            projectId: "personal-projects-c782a",
+            storageBucket: "personal-projects-c782a.appspot.com",
+            messagingSenderId: "206818233665",
+            appId: "1:206818233665:web:3053896b1d213940bb65c0",
+            measurementId: "G-6N8QPZSJ8X"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase();
+        const auth = getAuth();
+
+        // DOM Elements
+        const nameBox = document.getElementById("namebox");
+        const addBtn = document.getElementById("addbtn");
+        const todoList = document.getElementById("todo-list");
+
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const registerBtn = document.getElementById("registerBtn");
+        const loginBtn = document.getElementById("loginBtn");
+        const logoutLink = document.getElementById("logout-link");
+        const authSection = document.getElementById("auth-section");
+
+        const todoSection = document.getElementById("todo-section");
+        const bookSection = document.getElementById("book-section");
+        const genreSection = document.getElementById("genre-section");
+
+        const registerLink = document.getElementById("register-link");
+        const loginLink = document.getElementById("login-link");
+
+        const homeLink = document.getElementById("home-link");
+        const bookLink = document.getElementById("book-link");
+        const genreLink = document.getElementById("genre-link");
+
+        // Authentication functions
+        registerBtn.addEventListener("click", () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("User registered successfully!");
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                });
+        });
+
+        loginBtn.addEventListener("click", () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("User signed in!");
+                    toggleUI(true);
+                    loadTodos(); // Load todos on login
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                });
+        });
+
+        logoutLink.addEventListener("click", () => {
+            signOut(auth)
+                .then(() => {
+                    alert("User signed out!");
+                    toggleUI(false);
+                    todoList.innerHTML = ""; // Clear the todo list on sign out
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                });
+        });
+
+        // Toggle UI based on user authentication state
+        function toggleUI(isLoggedIn) {
+            if (isLoggedIn) {
+                authSection.style.display = "none";
+                todoSection.style.display = "block";
+                logoutLink.style.display = "inline";
+                registerLink.style.display = "none";
+                loginLink.style.display = "none";
+                console.log("Logged in: Logout link visible");
+            } else {
+                authSection.style.display = "block";
+                todoSection.style.display = "none";
+                logoutLink.style.display = "none";
+                registerLink.style.display = "inline";
+                loginLink.style.display = "inline";
+                console.log("Logged out: Logout link hidden");
+            }
+        }
+
+        // Check user's authentication state on page load
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log("User is logged in:", user);
+                toggleUI(true);
+                loadTodos();
+                loadBooks();
+                loadGenres();
+            } else {
+                console.log("User is not logged in.");
+                toggleUI(false);
+            }
+        });
+
+        // CRUD functions for Todo List
+        addBtn.addEventListener("click", () => {
+            const todoId = new Date().getTime().toString();
+            set(ref(db, "todos/" + todoId), {
+                name: nameBox.value
+            }).then(() => {
+                alert("Todo item added successfully!");
+                nameBox.value = ""; // Clear the input box
+                loadTodos(); // Reload todos
+            }).catch((error) => {
+                alert("Error adding item: " + error.message);
+            });
+        });
+
+        function loadTodos() {
+            const todosRef = ref(db, "todos/");
+            onValue(todosRef, (snapshot) => {
+                todoList.innerHTML = "";
+                snapshot.forEach((childSnapshot) => {
+                    const todoId = childSnapshot.key;
+                    const todoData = childSnapshot.val();
+                    const todoItem = document.createElement("li");
+                    todoItem.innerHTML = `
+                        ${todoData.name}
+                        <button onclick="editTodo('${todoId}', '${todoData.name}')">Edit</button>
+                        <button onclick="deleteTodo('${todoId}')">Delete</button>
+                    `;
+                    todoList.appendChild(todoItem);
+                });
+            });
+        }
+
+        window.editTodo = function(todoId, oldName) {
+            const newName = prompt("Edit the todo item:", oldName);
+            if (newName) {
+                update(ref(db, "todos/" + todoId), { name: newName })
+                    .then(() => {
+                        alert("Todo item updated successfully!");
+                        loadTodos();
+                    })
+                    .catch((error) => {
+                        alert("Error updating item: " + error.message);
+                    });
+            }
+        }
+
+        window.deleteTodo = function(todoId) {
+            remove(ref(db, "todos/" + todoId))
+                .then(() => {
+                    alert("Todo item deleted successfully!");
+                    loadTodos();
+                })
+                .catch((error) => {
+                    alert("Error deleting item: " + error.message);
+                });
+        }
+
+        // Navigation functions
+        function showSection(section) {
+            authSection.style.display = "none";
+            todoSection.style.display = "none";
+            bookSection.style.display = "none";
+            genreSection.style.display = "none";
+
+            section.style.display = "block";
+        }
+
+        homeLink.addEventListener("click", () => showSection(todoSection));
+        bookLink.addEventListener("click", () => showSection(bookSection));
+        genreLink.addEventListener("click", () => showSection(genreSection));
+    </script>
+</body>
+</html>
