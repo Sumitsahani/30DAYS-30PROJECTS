@@ -3,84 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo-list</title>
+    <title>Todo List</title>
     <style>
-        /* Basic styling for navigation bar */
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        /* Common styles for both themes */
         nav {
+            width: 100%;
             display: flex;
             justify-content: space-between;
-            background-color: #333;
             padding: 1rem;
-            color: white;
+            position: absolute;
+            top: 0;
+            transition: background-color 0.3s;
         }
-        nav a {
+        nav a, nav button {
             color: white;
             text-decoration: none;
             padding: 0.5rem 1rem;
-            margin: 0 0.5rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
         }
-        nav a:hover {
-            background-color: #555;
+        nav a:hover, nav button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
         }
-        #auth-section, #todo-section, #book-section, #genre-section {
-            margin: 2rem;
+        #auth-section, #todo-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: none;
+            transition: all 0.3s;
+        }
+        input {
+            display: block;
+            margin: 1rem auto;
+            padding: 0.5rem;
+            width: 80%;
+            border-radius: 5px;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        button {
+            padding: 0.7rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #todo-list {
+            list-style: none;
+            margin-top: 1rem;
+            padding: 0;
+        }
+        #todo-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        /* Demon Theme */
+        .demon {
+            background-color: #1a1a1a;
+            color: #ff6666;
+        }
+        .demon nav {
+            background-color: #333;
+        }
+        .demon #auth-section, .demon #todo-section {
+            background-color: #444;
+            color: #ffcccb;
+        }
+        .demon input {
+            border: 1px solid #ff6666;
+            background-color: #333;
+            color: #ffcccb;
+        }
+        .demon button {
+            background-color: #ff6666;
+            color: white;
+        }
+        .demon button:hover {
+            background-color: #ff4d4d;
+        }
+
+        /* Angel Theme */
+        .angel {
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        .angel nav {
+            background-color: #87cefa;
+        }
+        .angel #auth-section, .angel #todo-section {
+            background-color: white;
+            color: #333;
+        }
+        .angel input {
+            border: 1px solid #87cefa;
+            background-color: #fff;
+            color: #333;
+        }
+        .angel button {
+            background-color: #87cefa;
+            color: white;
+        }
+        .angel button:hover {
+            background-color: #7ec0ee;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
     <nav>
         <div>
             <a href="#" id="home-link">Home</a>
-            <a href="#" id="book-link">Book Detail</a>
-            <a href="#" id="genre-link">Genre</a>
+            <button id="theme-toggle">Toggle Theme</button>
         </div>
         <div id="nav-links">
-            <a href="#" id="register-link" style="display:none;">Register</a>
-            <a href="#" id="login-link" style="display:none;">Login</a>
+            <a href="#" id="register-link">Register</a>
+            <a href="#" id="login-link">Login</a>
             <a href="#" id="logout-link" style="display:none;">Logout</a>
         </div>
     </nav>
 
-    <!-- Authentication UI -->
     <div id="auth-section">
-        <input id="email" type="email" placeholder="Email"/>
-        <input id="password" type="password" placeholder="Password"/>
+        <h2>Welcome to Todo List</h2>
+        <input id="email" type="email" placeholder="Email" required />
+        <input id="password" type="password" placeholder="Password" required />
         <button id="registerBtn">Register</button>
         <button id="loginBtn">Login</button>
     </div>
 
-    <!-- Todo List UI -->
-    <div id="todo-section" style="display:none;">
-        <input id="namebox" type="text" placeholder="Enter Todo"/>
-        <button id="addbtn">Add</button>
+    <div id="todo-section">
+        <h2>Your Todo List</h2>
+        <input id="namebox" type="text" placeholder="Enter Todo" />
+        <button id="addbtn">Add Todo</button>
         <ul id="todo-list"></ul>
     </div>
 
-    <!-- Book Detail UI -->
-    <div id="book-section" style="display:none;">
-        <input id="book-title" type="text" placeholder="Enter Book Title"/>
-        <input id="book-author" type="text" placeholder="Enter Author"/>
-        <input id="book-genre" type="text" placeholder="Enter Genre"/>
-        <button id="addBookBtn">Add Book</button>
-        <ul id="book-list"></ul>
-    </div>
-
-    <!-- Genre UI -->
-    <div id="genre-section" style="display:none;">
-        <input id="genre-name" type="text" placeholder="Enter Genre Name"/>
-        <button id="addGenreBtn">Add Genre</button>
-        <ul id="genre-list"></ul>
-    </div>
-
     <script type="module">
-        // Import Firebase dependencies
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics.js";
-        import { getDatabase, ref, set, update, remove, onValue } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+        import { getDatabase, ref, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDQxTfHxK9zx8q0g7xr06YWPeIjaJScYqU",
             authDomain: "personal-projects-c782a.firebaseapp.com",
@@ -91,16 +176,9 @@
             measurementId: "G-6N8QPZSJ8X"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getDatabase();
         const auth = getAuth();
-
-        // DOM Elements
-        const nameBox = document.getElementById("namebox");
-        const addBtn = document.getElementById("addbtn");
-        const todoList = document.getElementById("todo-list");
+        const db = getDatabase();
 
         const emailInput = document.getElementById("email");
         const passwordInput = document.getElementById("password");
@@ -108,25 +186,27 @@
         const loginBtn = document.getElementById("loginBtn");
         const logoutLink = document.getElementById("logout-link");
         const authSection = document.getElementById("auth-section");
-
         const todoSection = document.getElementById("todo-section");
-        const bookSection = document.getElementById("book-section");
-        const genreSection = document.getElementById("genre-section");
+        const nameBox = document.getElementById("namebox");
+        const addBtn = document.getElementById("addbtn");
+        const todoList = document.getElementById("todo-list");
 
-        const registerLink = document.getElementById("register-link");
-        const loginLink = document.getElementById("login-link");
+        let currentTheme = 'angel'; // Default theme
 
-        const homeLink = document.getElementById("home-link");
-        const bookLink = document.getElementById("book-link");
-        const genreLink = document.getElementById("genre-link");
+        // Theme toggle functionality
+        document.getElementById("theme-toggle").addEventListener("click", () => {
+            currentTheme = currentTheme === 'angel' ? 'demon' : 'angel';
+            document.body.className = currentTheme;
+        });
 
-        // Authentication functions
         registerBtn.addEventListener("click", () => {
             const email = emailInput.value;
             const password = passwordInput.value;
             createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
+                .then(() => {
                     alert("User registered successfully!");
+                    emailInput.value = "";
+                    passwordInput.value = "";
                 })
                 .catch((error) => {
                     alert("Error: " + error.message);
@@ -137,10 +217,9 @@
             const email = emailInput.value;
             const password = passwordInput.value;
             signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
+                .then(() => {
                     alert("User signed in!");
                     toggleUI(true);
-                    loadTodos(); // Load todos on login
                 })
                 .catch((error) => {
                     alert("Error: " + error.message);
@@ -152,58 +231,49 @@
                 .then(() => {
                     alert("User signed out!");
                     toggleUI(false);
-                    todoList.innerHTML = ""; // Clear the todo list on sign out
                 })
                 .catch((error) => {
                     alert("Error: " + error.message);
                 });
         });
 
-        // Toggle UI based on user authentication state
         function toggleUI(isLoggedIn) {
             if (isLoggedIn) {
                 authSection.style.display = "none";
                 todoSection.style.display = "block";
                 logoutLink.style.display = "inline";
-                registerLink.style.display = "none";
-                loginLink.style.display = "none";
-                console.log("Logged in: Logout link visible");
             } else {
                 authSection.style.display = "block";
                 todoSection.style.display = "none";
                 logoutLink.style.display = "none";
-                registerLink.style.display = "inline";
-                loginLink.style.display = "inline";
-                console.log("Logged out: Logout link hidden");
             }
         }
 
-        // Check user's authentication state on page load
-        auth.onAuthStateChanged((user) => {
+        onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log("User is logged in:", user);
                 toggleUI(true);
                 loadTodos();
-                loadBooks();
-                loadGenres();
             } else {
-                console.log("User is not logged in.");
                 toggleUI(false);
             }
         });
 
-        // CRUD functions for Todo List
         addBtn.addEventListener("click", () => {
             const todoId = new Date().getTime().toString();
-            set(ref(db, "todos/" + todoId), {
-                name: nameBox.value
-            }).then(() => {
-                alert("Todo item added successfully!");
-                nameBox.value = ""; // Clear the input box
-                loadTodos(); // Reload todos
-            }).catch((error) => {
-                alert("Error adding item: " + error.message);
-            });
+            const todoName = nameBox.value;
+            if (todoName) {
+                set(ref(db, "todos/" + todoId), { name: todoName })
+                    .then(() => {
+                        alert("Todo item added successfully!");
+                        nameBox.value = ""; // Clear the input box
+                        loadTodos(); // Reload todos
+                    })
+                    .catch((error) => {
+                        alert("Error adding item: " + error.message);
+                    });
+            } else {
+                alert("Please enter a todo item.");
+            }
         });
 
         function loadTodos() {
@@ -236,7 +306,7 @@
                         alert("Error updating item: " + error.message);
                     });
             }
-        }
+        };
 
         window.deleteTodo = function(todoId) {
             remove(ref(db, "todos/" + todoId))
@@ -247,21 +317,7 @@
                 .catch((error) => {
                     alert("Error deleting item: " + error.message);
                 });
-        }
-
-        // Navigation functions
-        function showSection(section) {
-            authSection.style.display = "none";
-            todoSection.style.display = "none";
-            bookSection.style.display = "none";
-            genreSection.style.display = "none";
-
-            section.style.display = "block";
-        }
-
-        homeLink.addEventListener("click", () => showSection(todoSection));
-        bookLink.addEventListener("click", () => showSection(bookSection));
-        genreLink.addEventListener("click", () => showSection(genreSection));
+        };
     </script>
 </body>
 </html>

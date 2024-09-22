@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stopwatch</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+      body {
+        font-family: 'Roboto', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-size: cover;
+        background-position: center;
+        transition: background-image 0.5s ease;
+        color: #fff;
+      }
+      .stopwatch {
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+      }
+      .display {
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #ff3333;
+        padding-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .display .emoji {
+        font-size: 30px;
+        margin-right: 10px;
+      }
+      .buttons button {
+        margin: 5px;
+        padding: 12px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .buttons button:hover {
+        background-color: #ff3333;
+        color: #fff;
+      }
+      .buttons button:active {
+        transform: scale(0.95);
+      }
+      .start-btn {
+        background-color: #4CAF50;
+        color: #fff;
+      }
+      .stop-btn {
+        background-color: #ff9800;
+        color: #fff;
+      }
+      .reset-btn {
+        background-color: #f44336;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stopwatch">
+      <div class="display" id="count">
+        <span class="emoji">⏱️</span>
+        <span id="time">00:00:00</span>
+      </div>
+      <div class="buttons">
+        <button class="start-btn" onclick="start()">▶️ Start</button>
+        <button class="stop-btn" onclick="stop()">⏸️ Stop</button>
+        <button class="reset-btn" onclick="reset()">🔄 Reset</button>
+      </div>
+    </div>
+    <script>
+      // List of random background images
+      // This is not part of this project 
+      const images = [
+        'https://images.unsplash.com/photo-1496181133206-80ce9b88a853',
+        'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+        'https://images.unsplash.com/photo-1518459031867-a89b944bffe9',
+        'https://images.unsplash.com/photo-1483794344563-d27a8d38b3dd',
+        'https://images.unsplash.com/photo-1518349619113-03114f1ebb70',
+      ];
+
+
+      // Function to set a random background image
+      const setRandomBackground = () => {
+        const randomImage = images[Math.floor(Math.random() * images.length)];
+        document.body.style.backgroundImage = `url(${randomImage})`;
+      };
+
+      // Set random background on page load
+      window.onload = setRandomBackground;
+
+      
+// <---------------------------------------------main function------------------------------------------------->
+      let count = 0;
+      let interval;
+
+      const formatTime = (time) => {
+        // Function to format time into HH:MM:SS
+        let hours = Math.floor(time / 3600); // 1 hour = 3600 sec
+        let minutes = Math.floor((time % 3600) / 60);
+        let seconds = time % 60;
+        
+        hours = hours < 10 ? `0${hours}` : hours;
+        minutes = minutes < 10 ? `0${minutes}` : minutes;
+        seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+        return `${hours}:${minutes}:${seconds}`;
+      };
+
+      const updateDisplay = () => {
+        document.getElementById("time").innerText = formatTime(count);
+      };
+
+      const start = () => {
+        if (!interval) {
+          interval = setInterval(() => {
+            count += 1;
+            updateDisplay();
+          }, 100);
+        }
+      };
+
+      const stop = () => {
+        clearInterval(interval);
+        interval = null;
+      };
+
+      const reset = () => {
+        stop(); 
+        count = 0; 
+        updateDisplay(); 
+      };
+    </script>
+  </body>
+</html>

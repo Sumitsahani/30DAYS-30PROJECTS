@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-image: linear-gradient(to right, #ffafbd, #ffc3a0); /* Gradient background */
+  animation: gradient 5s ease infinite; /* Animation for background */
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.stopwatch {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  backdrop-filter: blur(10px); /* Blurring effect */
+}
+
+.display {
+  font-size: 64px;
+  margin-bottom: 20px;
+  color: #ffcc00; /* Gold color for the time display */
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.button {
+  padding: 12px 25px;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform for hover effect */
+  color: #fff;
+}
+
+.start-btn {
+  background-color: #4CAF50; /* Green */
+}
+
+.stop-btn {
+  background-color: #ff9800; /* Orange */
+}
+
+.reset-btn {
+  background-color: #f44336; /* Red */
+}
+
+.button:hover {
+  transform: scale(1.1); /* Scale effect on hover */
+}
+
+.button:active {
+  transform: scale(0.95); /* Scale effect on click */
+}
