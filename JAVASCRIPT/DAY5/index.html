@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Montserrat', sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #6dd5fa, #2980b9);
+        height: 100vh;
+        padding-top: 80px;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px 30px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        z-index: 1000;
+        width: auto;
+      }
+
+      nav input {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        margin-right: 10px;
+        width: 200px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        outline: none;
+      }
+
+      nav input::placeholder {
+        color: #fff;
+        opacity: 0.7;
+      }
+
+      nav button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #ff7979;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      nav button:hover {
+        background-color: #e84393;
+      }
+
+      .maincard {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 20px 30px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-top: 20px;
+        width: 300px;
+        display: none;
+      }
+
+      .city-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .temp {
+        font-size: 2.5rem;
+        margin: 10px 0;
+      }
+
+      .weather-description {
+        font-size: 1.2rem;
+        text-transform: capitalize;
+      }
+
+      .icon {
+        width: 100px;
+        height: 100px;
+      }
+
+      .details {
+        margin-top: 15px;
+        text-align: left;
+      }
+
+      .details div {
+        margin-bottom: 5px;
+      }
+
+      @media (max-width: 480px) {
+        nav {
+          flex-direction: column;
+          padding: 20px;
+        }
+
+        nav input {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <input type="text" id="city" placeholder="Enter City Name" />
+      <button onclick="fetchWeather()">Search</button>
+    </nav>
+    <div class="maincard" id="weather-card">
+    </div>
+  </body>
+  <script>
+    const APIKEY = "458011ff5fd32cdaa2db24a8c2914b47";
+
+    async function fetchWeather() {
+      const cityName = document.getElementById('city').value;
+      const weatherCard = document.getElementById('weather-card');
+      weatherCard.style.display = 'none';
+
+      try {
+        const res = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${APIKEY}&units=metric`
+        );
+        const data = await res.json();
+        if (data.cod === 200) {
+          displayWeather(data);
+        } else {
+          alert('City not found. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error fetching the weather data:', error);
+      }
+    }
+
+    function displayWeather(data) {
+      const weatherCard = document.getElementById('weather-card');
+      const { name, main, weather, wind, sys } = data;
+      const weatherHTML = `
+        <div class="city-name">${name}</div>
+        <img src="http://openweathermap.org/img/wn/${weather[0].icon}@2x.png" class="icon" alt="${weather[0].description}" />
+        <div class="temp">${main.temp}°C</div>
+        <div class="weather-description">${weather[0].description}</div>
+        <div class="details">
+          <div>Humidity: ${main.humidity}%</div>
+          <div>Wind Speed: ${wind.speed} m/s</div>
+          <div>Pressure: ${main.pressure} hPa</div>
+          <div>Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}</div>
+          <div>Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}</div>
+        </div>
+      `;
+      weatherCard.innerHTML = weatherHTML;
+      weatherCard.style.display = 'block';
+    }
+  </script>
+</html>
