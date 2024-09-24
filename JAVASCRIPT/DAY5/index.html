@@ -140,17 +140,12 @@
       const cityName = document.getElementById('city').value;
       const weatherCard = document.getElementById('weather-card');
       weatherCard.style.display = 'none';
-
       try {
         const res = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${APIKEY}&units=metric`
         );
         const data = await res.json();
-        if (data.cod === 200) {
           displayWeather(data);
-        } else {
-          alert('City not found. Please try again.');
-        }
       } catch (error) {
         console.error('Error fetching the weather data:', error);
       }

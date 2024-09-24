@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Exchange 💸</title>
+  <style>
+    /* General reset and font */
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #fdd835, #fbc02d, #f57f17);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    /* Title styling */
+    div:first-child {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 3px 3px #ff7043;
+      animation: title-bounce 1s infinite alternate;
+    }
+
+    @keyframes title-bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+
+    /* Main container styling */
+    .main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 70%;
+      background-color: #fff9c4;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+      transform: rotate(-2deg);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .main:hover {
+      transform: rotate(0deg);
+    }
+
+    /* Input section styling */
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .left {
+      flex: 1;
+      margin-right: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      border-radius: 15px;
+      background-color: #ffecb3;
+      box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Input and select styling */
+    input {
+      padding: 12px;
+      border: 2px solid #ff7043;
+      border-radius: 10px;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      text-align: center;
+      background-color: #fff3e0;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    input:hover {
+      background-color: #ffe0b2;
+      box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.25);
+    }
+
+    select {
+      padding: 12px;
+      border: 2px solid #ff7043;
+      border-radius: 10px;
+      font-size: 1.3rem;
+      text-align: center;
+      background-color: #fff3e0;
+      cursor: pointer;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    select:hover {
+      background-color: #ffe0b2;
+      box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Add a playful animation to the input fields */
+    .left:hover input,
+    .left:hover select {
+      transform: scale(1.05);
+    }
+
+    /* Exchange Rate Display */
+    .exchange-rate {
+      font-size: 1.5rem;
+      color: #ff6f00;
+      background-color: #fffde7;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+    }
+
+    /* Button styling */
+    .search-btn,
+    .clear-btn {
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      background-color: #ff7043;
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+      margin: 5px;
+    }
+
+    .search-btn:hover,
+    .clear-btn:hover {
+      background-color: #ff5722;
+      transform: scale(1.1);
+      box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Footer emoji */
+    body::after {
+      content: "💸 Let's Exchange Some Currency! 💸";
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.8rem;
+      color: #ffffff;
+      text-shadow: 2px 2px #ff7043;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-10px); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div>💱 Exchange Rate 💱</div>
+  <div class="main">
+    <div class="input-group">
+      <div class="left">
+        <input id="rate1" placeholder="Enter rate 🔢" type="number" />
+        <select id="currency1">
+          <option value="USD">USD 🇺🇸</option>
+          <option value="EUR">EUR 🇪🇺</option>
+          <option value="JPY">JPY 🇯🇵</option>
+        </select>
+      </div>
+
+      <div class="left">
+        <input id="rate2" placeholder="Enter rate 🔢" type="number" />
+        <select id="currency2">
+          <option value="INR">INR 🇮🇳</option>
+          <option value="GBP">GBP 🇬🇧</option>
+          <option value="AUD">AUD 🇦🇺</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Display the exchange rate here -->
+    <div class="exchange-rate" id="exchangeRateDisplay">
+      Exchange Rate: 1 USD = 74.85 INR 💱
+    </div>
+
+    <!-- Search Button -->
+    <button class="search-btn" id="searchBtn">🔍 Search</button>
+    <button class="clear-btn" id="clearBtn">🗑️ Clear</button>
+  </div>
+  <script>
+    const fetchExchangeRate = async () => {
+      try {
+        let res = await fetch("https://v6.exchangerate-api.com/v6/09379841b1f04e05f265154b/latest/USD");
+        if (!res.ok) throw new Error("Network response was not ok");
+        let data = await res.json();
+        return data.conversion_rates;
+      } catch (error) {
+        alert("Failed to fetch exchange rates. Please try again later.");
+        console.error(error);
+      }
+    };
+
+    const updateExchangeRateDisplay = (rate) => {
+      const display = document.getElementById('exchangeRateDisplay');
+      display.textContent = `Exchange Rate: ${rate} 💱`;
+    };
+
+    const searchHandler = async () => {
+      const rates = await fetchExchangeRate();
+      const currency1 = document.getElementById('currency1').value;
+      const currency2 = document.getElementById('currency2').value;
+      const rate1 = parseFloat(document.getElementById('rate1').value) || 1; // Default to 1 if empty
+      const rate2 = parseFloat(document.getElementById('rate2').value) || 1; // Default to 1 if empty
+
+      if (rates && currency1 && currency2) {
+        // If both inputs are provided
+        if (document.getElementById('rate1').value && document.getElementById('rate2').value) {
+          const rate = (rates[currency2] / rates[currency1]) * rate1 * rate2;
+          updateExchangeRateDisplay(rate.toFixed(2));
+        } else if (document.getElementById('rate1').value) {
+          // If only rate1 is provided
+          const rate = (rates[currency2] / rates[currency1]) * rate1;
+          updateExchangeRateDisplay(rate.toFixed(2));
+        } else if (document.getElementById('rate2').value) {
+          // If only rate2 is provided
+          const rate = (rates[currency2] / rates[currency1]) * rate2;
+          updateExchangeRateDisplay(rate.toFixed(2));
+        } else {
+          // If neither input is provided
+          updateExchangeRateDisplay('1'); // Default value if both are empty
+        }
+      }
+    };
+
+    const clearHandler = () => {
+      document.getElementById('rate1').value = '';
+      document.getElementById('rate2').value = '';
+      document.getElementById('exchangeRateDisplay').textContent = 'Exchange Rate: 1 USD = 74.85 INR 💱';
+      document.getElementById('currency1').selectedIndex = 0;
+      document.getElementById('currency2').selectedIndex = 0;
+    };
+
+    document.getElementById('searchBtn').addEventListener('click', searchHandler);
+    document.getElementById('clearBtn').addEventListener('click', clearHandler);
+  </script>
+</body>
+</html>

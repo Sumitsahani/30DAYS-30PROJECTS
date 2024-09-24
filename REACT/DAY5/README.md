@@ -9,12 +9,6 @@ Welcome to **Weather Whiz**, the most fabulous weather app that tells you if you
 - **Weather Descriptions**: Know if it's sunny, rainy, or if the weather is just as confused as you are! 😂
 - **Humidity and Wind Speed**: Because you need to know if your hair will be a frizzy mess or blowing in the wind like a superstar! 💁‍♀️💨
 
-## 📸 Screenshots
-
-![Weather Whiz Screenshot](link-to-your-screenshot.png)
-
-*(Add a screenshot of your app here)*
-
 ## 🎨 Getting Started
 
 1. **Clone the Repo**:  
